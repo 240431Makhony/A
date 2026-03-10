@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мой профиль</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-50:  #e6f7f7;
+      --teal-100: #b3e8e8;
+      --teal-200: #80d9d9;
+      --teal-300: #4dcaca;
+      --teal-400: #26bfbf;
+      --teal-500: #00b3b3;
+      --teal-600: #009999;
+      --teal-700: #007a7a;
+      --teal-800: #005c5c;
+      --teal-900: #003d3d;
+      --accent:   #00d4c8;
+      --accent2:  #00e5d5;
+      --bg:       #e8f5f5;
+      --card-bg:  #ffffff;
+      --text:     #1a3a3a;
+      --muted:    #5a8a8a;
+      --shadow:   0 4px 24px rgba(0,179,179,0.13);
+      --radius:   18px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 16px;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(0,179,179,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,212,200,0.09) 0%, transparent 55%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 28px 24px;
+      border: 1.5px solid rgba(0,179,179,0.10);
+      animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) both;
+    }
+    .card:nth-child(2) { animation-delay: .12s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--teal-800);
+      margin-bottom: 6px;
+      letter-spacing: -.3px;
+    }
+
+    .my-info {
+      font-size: .93rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .my-info span { color: var(--teal-600); }
+
+    /* ── BUTTONS GRID ── */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .status-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 10px;
+      border: 2.5px solid transparent;
+      border-radius: 13px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, filter .15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .status-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background .15s;
+    }
+    .status-btn:hover { transform: translateY(-2px); filter: brightness(1.07); }
+    .status-btn:hover::after { background: rgba(255,255,255,0.12); }
+    .status-btn:active { transform: scale(.97); }
+
+    .status-btn.active {
+      box-shadow: 0 0 0 3px var(--teal-300), 0 4px 16px rgba(0,179,179,0.25) !important;
+      filter: brightness(1.08);
+    }
+
+    /* Colors */
+    .btn-study  { background: #00b894; color: #fff; box-shadow: 0 3px 12px rgba(0,184,148,.25); }
+    .btn-coffee { background: #fdcb6e; color: #5a3e00; box-shadow: 0 3px 12px rgba(253,203,110,.30); }
+    .btn-game   { background: var(--teal-500); color: #fff; box-shadow: 0 3px 12px rgba(0,179,179,.28); }
+    .btn-home   { background: #636e72; color: #fff; box-shadow: 0 3px 12px rgba(99,110,114,.22); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--teal-200), transparent);
+      margin: 4px 0 16px;
+    }
+
+    /* ── GROUP LIST ── */
+    #grouplist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    #grouplist::-webkit-scrollbar { width: 5px; }
+    #grouplist::-webkit-scrollbar-track { background: var(--teal-50); border-radius: 10px; }
+    #grouplist::-webkit-scrollbar-thumb { background: var(--teal-300); border-radius: 10px; }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: var(--teal-50);
+      border: 1.5px solid rgba(0,179,179,0.08);
+      transition: background .2s, transform .15s;
+      animation: fadeIn .3s ease both;
+    }
+    .user-item:hover { background: var(--teal-100); transform: translateX(3px); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+      transition: background .4s;
+    }
+
+    .user-info { flex: 1; min-width: 0; }
+    .user-info strong {
+      display: block;
+      font-size: .95rem;
+      font-weight: 800;
+      color: var(--teal-900);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-info small {
+      font-size: .8rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* status colors for dots */
+    .dot-study  { background: #00b894; }
+    .dot-coffee { background: #fdcb6e; }
+    .dot-game   { background: #00b3b3; }
+    .dot-home   { background: #636e72; }
+    .dot-default{ background: #b2bec3; }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+      padding: 18px 0;
+    }
+
+    /* ── HEADER BADGE ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      letter-spacing: .5px;
+      box-shadow: 0 2px 8px rgba(0,179,179,.22);
+    }
+    .badge::before { content:'●'; font-size:.6rem; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Profile Card -->
+  <div class="card">
+    <div class="badge">ОНЛАЙН</div>
+    <div class="card-title">Мой профиль</div>
+    <div class="my-info">Вы зашли как: <span id="myInfo">...</span></div>
+
+    <div class="btn-grid">
+      <button class="status-btn btn-study"  onclick="changeStatus('Учусь','#00b894')">📚 Учусь</button>
+      <button class="status-btn btn-coffee" onclick="changeStatus('Кофе-брейк','#fdcb6e')">☕ Кофе</button>
+      <button class="status-btn btn-game"   onclick="changeStatus('В игре','#00b3b3')">🎮 В игре</button>
+      <button class="status-btn btn-home"   onclick="changeStatus('Дома','#636e72')">🏠 Дома</button>
+    </div>
+  </div>
+
+  <!-- Group Monitor Card -->
+  <div class="card">
+    <div class="card-title">Монитор группы</div>
+    <div class="divider"></div>
+    <div id="grouplist"><div class="empty">Загрузка…</div></div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const URL = 'styuzsotvczcicwbrgzi.supabase.co';
+  const KEY = 'sb_publishable_lCwf-mXqiS3ci9bDqVem1Q_ufJd_cv9';
+  const supabase = createClient(URL, KEY);
+
+  const MY_ID = 'a30d9508-5bb2-4d87-8bc6-00c8f090a9bb';
+
+  const STATUS_ICONS = {
+    'Учусь':      '📚',
+    'Кофе-брейк': '☕',
+    'В игре':     '🎮',
+    'Дома':       '🏠',
+  };
+
+  const COLOR_CLASS = {
+    '#00b894': 'dot-study',
+    '#fdcb6e': 'dot-coffee',
+    '#00b3b3': 'dot-game',
+    '#636e72': 'dot-home',
+  };
+
+  window.changeStatus = async (text, color) => {
+    // highlight active button
+    document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ status: text, color: color })
+      .eq('id', MY_ID);
+
+    if (error) {
+      alert('Ошибка! Проверьте RLS политики в Supabase.');
+      console.error(error);
+    } else {
+      fetchGroup();
+    }
+  };
+
+  async function fetchGroup() {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .order('username', { ascending: true });
+
+    if (error) return console.error(error);
+
+    const list = document.getElementById('grouplist');
+
+    if (!data || data.length === 0) {
+      list.innerHTML = '<div class="empty">Нет участников</div>';
+      return;
+    }
+
+    list.innerHTML = data.map(user => {
+      const dotClass = COLOR_CLASS[user.color] || 'dot-default';
+      const icon = STATUS_ICONS[user.status] || '❓';
+      const statusText = user.status || 'Статус не задан';
+      return `
+        <div class="user-item">
+          <div class="status-dot ${dotClass}"></div>
+          <div class="user-info">
+            <strong>${user.username}</strong>
+            <small>${icon} ${statusText}</small>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const me = data.find(u => u.id === MY_ID);
+    if (me) document.getElementById('myInfo').textContent = me.username;
+  }
+
+  fetchGroup();
+  setInterval(fetchGroup, 4000);
+</script>
+</body>
+</html>
