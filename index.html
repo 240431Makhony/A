@@ -20,7 +20,6 @@
       --teal-800: #005c5c;
       --teal-900: #003d3d;
       --accent:   #00d4c8;
-      --accent2:  #00e5d5;
       --bg:       #e8f5f5;
       --card-bg:  #ffffff;
       --text:     #1a3a3a;
@@ -50,7 +49,6 @@
       gap: 22px;
     }
 
-    /* ── CARD ── */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -59,7 +57,6 @@
       border: 1.5px solid rgba(0,179,179,0.10);
       animation: fadeUp .45s cubic-bezier(.22,.61,.36,1) both;
     }
-    .card:nth-child(2) { animation-delay: .12s; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -82,7 +79,70 @@
     }
     .my-info span { color: var(--teal-600); }
 
-    /* ── BUTTONS GRID ── */
+    /* LOGIN CARD */
+    .login-card {
+      text-align: center;
+      padding: 40px 28px;
+    }
+
+    .login-card .card-title {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .login-subtitle {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 28px;
+      font-weight: 600;
+    }
+
+    .google-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      border: 2px solid #e0e0e0;
+      border-radius: 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .15s;
+      width: 100%;
+      justify-content: center;
+    }
+    .google-btn:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+    .google-btn:active { transform: scale(.97); }
+
+    .google-icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* LOGOUT BTN */
+    .logout-btn {
+      margin-top: 14px;
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 12px;
+      background: var(--teal-50);
+      color: var(--muted);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .logout-btn:hover { background: var(--teal-100); }
+
+    /* BUTTONS GRID */
     .btn-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -102,39 +162,25 @@
       font-weight: 700;
       cursor: pointer;
       transition: transform .15s, box-shadow .15s, filter .15s;
-      position: relative;
-      overflow: hidden;
-    }
-    .status-btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0);
-      transition: background .15s;
     }
     .status-btn:hover { transform: translateY(-2px); filter: brightness(1.07); }
-    .status-btn:hover::after { background: rgba(255,255,255,0.12); }
     .status-btn:active { transform: scale(.97); }
-
     .status-btn.active {
       box-shadow: 0 0 0 3px var(--teal-300), 0 4px 16px rgba(0,179,179,0.25) !important;
       filter: brightness(1.08);
     }
 
-    /* Colors */
     .btn-study  { background: #00b894; color: #fff; box-shadow: 0 3px 12px rgba(0,184,148,.25); }
     .btn-coffee { background: #fdcb6e; color: #5a3e00; box-shadow: 0 3px 12px rgba(253,203,110,.30); }
     .btn-game   { background: var(--teal-500); color: #fff; box-shadow: 0 3px 12px rgba(0,179,179,.28); }
     .btn-home   { background: #636e72; color: #fff; box-shadow: 0 3px 12px rgba(99,110,114,.22); }
 
-    /* ── DIVIDER ── */
     .divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--teal-200), transparent);
       margin: 4px 0 16px;
     }
 
-    /* ── GROUP LIST ── */
     #grouplist {
       display: flex;
       flex-direction: column;
@@ -171,7 +217,6 @@
       border-radius: 50%;
       flex-shrink: 0;
       box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
-      transition: background .4s;
     }
 
     .user-info { flex: 1; min-width: 0; }
@@ -190,14 +235,12 @@
       font-weight: 600;
     }
 
-    /* status colors for dots */
     .dot-study  { background: #00b894; }
     .dot-coffee { background: #fdcb6e; }
     .dot-game   { background: #00b3b3; }
     .dot-home   { background: #636e72; }
     .dot-default{ background: #b2bec3; }
 
-    /* ── EMPTY STATE ── */
     .empty {
       text-align: center;
       color: var(--muted);
@@ -205,7 +248,6 @@
       padding: 18px 0;
     }
 
-    /* ── HEADER BADGE ── */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -222,27 +264,80 @@
     }
     .badge::before { content:'●'; font-size:.6rem; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--teal-200);
+      margin-right: 4px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .profile-header-info { flex: 1; }
+    .profile-header-info .name {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--teal-900);
+    }
+    .profile-header-info .email {
+      font-size: .8rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Login Card -->
+  <div class="card login-card" id="loginCard">
+    <div style="font-size:3rem;margin-bottom:12px;">👋</div>
+    <div class="card-title">Добро пожаловать!</div>
+    <div class="login-subtitle">Войдите чтобы установить свой статус и видеть статусы группы</div>
+    <button class="google-btn" onclick="loginWithGoogle()">
+      <svg class="google-icon" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Войти через Google
+    </button>
+  </div>
+
   <!-- Profile Card -->
-  <div class="card">
+  <div class="card" id="profileCard" style="display:none;">
     <div class="badge">ОНЛАЙН</div>
     <div class="card-title">Мой профиль</div>
-    <div class="my-info">Вы зашли как: <span id="myInfo">...</span></div>
+
+    <div class="profile-header">
+      <img id="userAvatar" class="avatar" src="" alt="avatar" onerror="this.style.display='none'"/>
+      <div class="profile-header-info">
+        <div class="name" id="userName">...</div>
+        <div class="email" id="userEmail">...</div>
+      </div>
+    </div>
 
     <div class="btn-grid">
-      <button class="status-btn btn-study"  onclick="changeStatus('Учусь','#00b894')">📚 Учусь</button>
-      <button class="status-btn btn-coffee" onclick="changeStatus('Кофе-брейк','#fdcb6e')">☕ Кофе</button>
-      <button class="status-btn btn-game"   onclick="changeStatus('В игре','#00b3b3')">🎮 В игре</button>
-      <button class="status-btn btn-home"   onclick="changeStatus('Дома','#636e72')">🏠 Дома</button>
+      <button class="status-btn btn-study"  onclick="changeStatus('Учусь','#00b894',this)">📚 Учусь</button>
+      <button class="status-btn btn-coffee" onclick="changeStatus('Кофе-брейк','#fdcb6e',this)">☕ Кофе</button>
+      <button class="status-btn btn-game"   onclick="changeStatus('В игре','#00b3b3',this)">🎮 В игре</button>
+      <button class="status-btn btn-home"   onclick="changeStatus('Дома','#636e72',this)">🏠 Дома</button>
     </div>
+
+    <button class="logout-btn" onclick="logout()">Выйти из аккаунта</button>
   </div>
 
   <!-- Group Monitor Card -->
-  <div class="card">
+  <div class="card" id="groupCard" style="display:none;">
     <div class="card-title">Монитор группы</div>
     <div class="divider"></div>
     <div id="grouplist"><div class="empty">Загрузка…</div></div>
@@ -253,54 +348,79 @@
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-  const URL = 'https://styuzsotvczcicwbrgzi.supabase.co';
-  const KEY = 'sb_publishable_lCwf-mXqiS3ci9bDqVem1Q_ufJd_cv9';
-  const supabase = createClient(URL, KEY);
-
-  const MY_ID = 'a30d9508-5bb2-4d87-8bc6-00c8f090a9bb';
+  const SUPABASE_URL = 'https://styuzsotvczcicwbrgzi.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_lCwf-mXqiS3ci9bDqVem1Q_ufJd_cv9';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const STATUS_ICONS = {
-    'Учусь':      '📚',
-    'Кофе-брейк': '☕',
-    'В игре':     '🎮',
-    'Дома':       '🏠',
+    'Учусь': '📚', 'Кофе-брейк': '☕', 'В игре': '🎮', 'Дома': '🏠',
   };
-
   const COLOR_CLASS = {
-    '#00b894': 'dot-study',
-    '#fdcb6e': 'dot-coffee',
-    '#00b3b3': 'dot-game',
-    '#636e72': 'dot-home',
+    '#00b894': 'dot-study', '#fdcb6e': 'dot-coffee',
+    '#00b3b3': 'dot-game',  '#636e72': 'dot-home',
   };
 
-  window.changeStatus = async (text, color) => {
-    // highlight active button
-    document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+  let currentUser = null;
+  let pollInterval = null;
 
-    const { error } = await supabase
+  // ── AUTH ──
+  window.loginWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+  };
+
+  window.logout = async () => {
+    clearInterval(pollInterval);
+    await supabase.auth.signOut();
+    currentUser = null;
+    showLogin();
+  };
+
+  // ── PROFILE ──
+  async function ensureProfile(user) {
+    const { data } = await supabase
       .from('profiles')
-      .update({ status: text })
-      .eq('id', MY_ID);
+      .select('id')
+      .eq('id', user.id)
+      .single();
 
-    if (error) {
-      alert('Ошибка! Проверьте RLS политики в Supabase.');
-      console.error(error);
-    } else {
-      fetchGroup();
+    if (!data) {
+      const username = user.user_metadata?.full_name
+        || user.user_metadata?.name
+        || user.email?.split('@')[0]
+        || 'User';
+      await supabase.from('profiles').insert({
+        id: user.id,
+        username,
+        status: 'Дома',
+        color: '#636e72'
+      });
     }
+  }
+
+  // ── STATUS ──
+  window.changeStatus = async (text, color, btn) => {
+    if (!currentUser) return;
+    document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    await supabase.from('profiles')
+      .update({ status: text, color })
+      .eq('id', currentUser.id);
+
+    fetchGroup();
   };
 
+  // ── GROUP LIST ──
   async function fetchGroup() {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('profiles')
       .select('*')
       .order('username', { ascending: true });
 
-    if (error) return console.error(error);
-
     const list = document.getElementById('grouplist');
-
     if (!data || data.length === 0) {
       list.innerHTML = '<div class="empty">Нет участников</div>';
       return;
@@ -309,24 +429,63 @@
     list.innerHTML = data.map(user => {
       const dotClass = COLOR_CLASS[user.color] || 'dot-default';
       const icon = STATUS_ICONS[user.status] || '❓';
-      const statusText = user.status || 'Статус не задан';
+      const isMe = currentUser && user.id === currentUser.id;
       return `
         <div class="user-item">
           <div class="status-dot ${dotClass}"></div>
           <div class="user-info">
-            <strong>${user.username}</strong>
-            <small>${icon} ${statusText}</small>
+            <strong>${user.username}${isMe ? ' 👤' : ''}</strong>
+            <small>${icon} ${user.status || 'Статус не задан'}</small>
           </div>
-        </div>
-      `;
+        </div>`;
     }).join('');
-
-    const me = data.find(u => u.id === MY_ID);
-    if (me) document.getElementById('myInfo').textContent = me.username;
   }
 
-  fetchGroup();
-  setInterval(fetchGroup, 4000);
+  // ── UI ──
+  function showLogin() {
+    document.getElementById('loginCard').style.display = 'block';
+    document.getElementById('profileCard').style.display = 'none';
+    document.getElementById('groupCard').style.display = 'none';
+  }
+
+  function showApp(user) {
+    document.getElementById('loginCard').style.display = 'none';
+    document.getElementById('profileCard').style.display = 'block';
+    document.getElementById('groupCard').style.display = 'block';
+
+    const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+    const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0];
+    const email = user.email || '';
+
+    document.getElementById('userAvatar').src = avatar;
+    document.getElementById('userName').textContent = name;
+    document.getElementById('userEmail').textContent = email;
+
+    fetchGroup();
+    clearInterval(pollInterval);
+    pollInterval = setInterval(fetchGroup, 4000);
+  }
+
+  // ── INIT ──
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session) {
+      currentUser = session.user;
+      await ensureProfile(currentUser);
+      showApp(currentUser);
+    } else {
+      currentUser = null;
+      showLogin();
+    }
+  });
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await ensureProfile(currentUser);
+    showApp(currentUser);
+  } else {
+    showLogin();
+  }
 </script>
 </body>
 </html>
