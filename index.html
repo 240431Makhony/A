@@ -367,7 +367,7 @@
   window.loginWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.href }
+      options: { redirectTo: 'https://240431makhony.github.io/A/' }
     });
   };
 
