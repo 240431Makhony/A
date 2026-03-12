@@ -374,8 +374,7 @@
   window.logout = async () => {
     clearInterval(pollInterval);
     await supabase.auth.signOut();
-    currentUser = null;
-    showLogin();
+    window.location.reload();
   };
 
   // ── PROFILE ──
