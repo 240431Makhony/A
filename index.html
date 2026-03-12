@@ -468,30 +468,21 @@
 
   // ── INIT ──
   supabase.auth.onAuthStateChange(async (event, session) => {
-    if (session) {
-      currentUser = session.user;
-      await ensureProfile(currentUser);
-      showApp(currentUser);
-    } else {
+    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+      if (session?.user) {
+        currentUser = session.user;
+        await ensureProfile(currentUser);
+        showApp(currentUser);
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       showLogin();
     }
   });
 
-  // Handle OAuth redirect with hash token
-  if (window.location.hash && window.location.hash.includes('access_token')) {
-    const { data, error } = await supabase.auth.getUser();
-    if (data?.user) {
-      currentUser = data.user;
-      await ensureProfile(currentUser);
-      showApp(currentUser);
-      window.history.replaceState(null, '', window.location.pathname);
-      return;
-    }
-  }
-
   const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
+  if (session?.user) {
     currentUser = session.user;
     await ensureProfile(currentUser);
     showApp(currentUser);
