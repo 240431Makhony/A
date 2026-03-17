@@ -667,6 +667,12 @@
   window.timerStart = function() {
     if (timerRunning) return;
     timerRunning = true;
+    // Если таймер запускается с нуля — записываем время начала в Supabase
+    if (timerSeconds === 0 && currentUser) {
+      supabase.from('profiles').update({
+        study_started_at: new Date().toISOString()
+      }).eq('id', currentUser.id).then(() => fetchGroup());
+    }
     timerInterval = setInterval(() => {
       timerSeconds++;
       updateTimerDisplay();
@@ -682,6 +688,12 @@
     document.getElementById('timerStartBtn').style.display = 'block';
     document.getElementById('timerPauseBtn').style.display = 'none';
     updateTimerDisplay();
+    // При паузе убираем таймер из монитора
+    if (currentUser) {
+      supabase.from('profiles').update({
+        study_started_at: null
+      }).eq('id', currentUser.id).then(() => fetchGroup());
+    }
   };
 
   window.timerReset = function() {
@@ -700,6 +712,12 @@
     document.getElementById('timerPauseBtn').style.display = 'none';
     updateTimerDisplay();
     updateTimerStats();
+    // При сбросе убираем таймер из монитора
+    if (currentUser) {
+      supabase.from('profiles').update({
+        study_started_at: null
+      }).eq('id', currentUser.id).then(() => fetchGroup());
+    }
   };
 
   function updateStreakStat() {
