@@ -313,6 +313,22 @@
       flex-shrink: 0;
     }
 
+    .study-timer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0,184,148,0.12);
+      color: #00b894;
+      font-size: .72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,184,148,0.25);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .3px;
+    }
+    .study-timer-badge::before { content: '⏱'; font-size: .65rem; }
+
     /* ── STUDY TIMER ── */
     .timer-card { padding: 22px 28px; }
     .timer-header {
@@ -743,22 +759,37 @@
     if (!currentUser) return;
     document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    await supabase.from('profiles').update({ status: text, color, last_seen: new Date().toISOString() }).eq('id', currentUser.id);
+    const studyStarted = text === 'Учусь' ? new Date().toISOString() : null;
+    await supabase.from('profiles').update({
+      status: text, color,
+      last_seen: new Date().toISOString(),
+      study_started_at: studyStarted
+    }).eq('id', currentUser.id);
     fetchGroup();
   };
 
   // ── GROUP LIST ──
-  async function fetchGroup() {
-    const { data } = await supabase.from('profiles').select('*').order('username', { ascending: true });
+  let groupTickerInterval = null;
+  let lastGroupData = [];
+
+  function formatStudyDuration(startedAt) {
+    const secs = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000);
+    if (secs < 0) return '0с';
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+    if (h > 0) return `${h}ч ${String(m).padStart(2,'0')}м ${String(s).padStart(2,'0')}с`;
+    if (m > 0) return `${m}м ${String(s).padStart(2,'0')}с`;
+    return `${s}с`;
+  }
+
+  function renderGroupList(data) {
     const list = document.getElementById('grouplist');
     if (!data || data.length === 0) { list.innerHTML = '<div class="empty">Нет участников</div>'; return; }
 
     const onlineUsers = data.filter(u => isOnline(u.last_seen));
-    const onlineCount = onlineUsers.length;
-
-    // Update online bar
-    document.getElementById('onlineCount').textContent = onlineCount + ' онлайн';
-    if (onlineCount > 0) {
+    document.getElementById('onlineCount').textContent = onlineUsers.length + ' онлайн';
+    if (onlineUsers.length > 0) {
       const names = onlineUsers.map(u => u.username.split(' ')[0]).join(', ');
       document.getElementById('onlineBarText').textContent = `Сейчас онлайн: ${names}`;
     } else {
@@ -770,6 +801,7 @@
       const icon = STATUS_ICONS[user.status] || '❓';
       const isMe = currentUser && user.id === currentUser.id;
       const online = isOnline(user.last_seen);
+      const studying = user.status === 'Учусь' && user.study_started_at;
       return `
         <div class="user-item">
           <div class="status-dot ${dotClass}"></div>
@@ -778,11 +810,30 @@
             <small>${icon} ${user.status || 'Статус не задан'}</small>
           </div>
           <div class="user-item-right">
+            ${studying ? `<span class="study-timer-badge" data-started="${user.study_started_at}">${formatStudyDuration(user.study_started_at)}</span>` : ''}
             <div class="${online ? 'online-dot' : 'offline-dot'}" title="${online ? 'Онлайн' : 'Оффлайн'}"></div>
             <span style="font-size:.68rem;color:var(--muted);font-weight:600;">${online ? 'онлайн' : 'офлайн'}</span>
           </div>
         </div>`;
     }).join('');
+  }
+
+  function tickStudyTimers() {
+    document.querySelectorAll('.study-timer-badge[data-started]').forEach(el => {
+      el.textContent = '⏱ ' + formatStudyDuration(el.dataset.started);
+    });
+  }
+
+  async function fetchGroup() {
+    const { data } = await supabase.from('profiles').select('*').order('username', { ascending: true });
+    lastGroupData = data || [];
+    renderGroupList(lastGroupData);
+
+    // Start live ticker for study timers
+    clearInterval(groupTickerInterval);
+    if (lastGroupData.some(u => u.status === 'Учусь' && u.study_started_at)) {
+      groupTickerInterval = setInterval(tickStudyTimers, 1000);
+    }
   }
 
   // ── CHAT ──
