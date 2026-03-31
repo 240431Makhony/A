@@ -305,7 +305,10 @@
     .reaction-btn:hover { transform:scale(1.12);background:var(--teal-50);border-color:var(--teal-300); }
     .reaction-btn.mine { background:rgba(0,179,179,.1);border-color:var(--teal-400); }
     .reaction-btn .r-count { font-size:.7rem;color:var(--muted); }
-    .add-reaction-wrap { position:relative;display:inline-block; }
+   .add-reaction-wrap {
+  position: relative;
+  z-index: 10; /* важно */
+}
     .add-reaction-btn {
       display:inline-flex;align-items:center;justify-content:center;
       width:22px;height:22px;border-radius:50%;border:1.5px dashed var(--teal-300);
