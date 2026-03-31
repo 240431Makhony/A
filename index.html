@@ -314,7 +314,7 @@
     }
     .add-reaction-btn:hover { background:var(--teal-50);border-style:solid; }
     .emoji-picker {
-      position:absolute;bottom:calc(100% + 6px);left:0;
+      position:fixed;
       background:#fff;border-radius:12px;padding:8px;
       box-shadow:0 8px 32px rgba(0,100,100,.18);border:1px solid var(--teal-100);
       display:flex;gap:4px;z-index:200;
@@ -913,14 +913,22 @@
     </div>`;
   }
 
-  window.togglePicker=function(e,msgId){
-    e.stopPropagation();
-    const picker=document.getElementById('picker-'+msgId);
-    if(!picker) return;
-    if(openPickerId&&openPickerId!==msgId) closeAllPickers();
-    picker.classList.toggle('open');
-    openPickerId=picker.classList.contains('open')?msgId:null;
-  };
+ window.togglePicker = function(e, msgId){
+  e.stopPropagation();
+  const picker = document.getElementById('picker-'+msgId);
+
+  if(!picker) return;
+
+  const rect = e.target.getBoundingClientRect();
+
+  picker.style.top = (rect.top - 50) + 'px';
+  picker.style.left = rect.left + 'px';
+
+  if(openPickerId && openPickerId !== msgId) closeAllPickers();
+
+  picker.classList.toggle('open');
+  openPickerId = picker.classList.contains('open') ? msgId : null;
+};
   window.closeAllPickers=closeAllPickers;
 
   window.toggleReaction=async function(msgId,emoji){
